@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+landlens.db
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Next.js / Node
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+build/
+dist/
+
+# Env & Secrets
+.env
+.env.local
+.env.development.local
+.env.production.local
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
