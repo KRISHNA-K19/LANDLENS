@@ -21,10 +21,12 @@ class RecordReferenceService(ABC):
     ) -> List[LandRecord]:
         pass
 
+RecordProvider = RecordReferenceService  # Alias per Master Specification
+
 class DemoRecordProvider(RecordReferenceService):
     """
-    Demo Record Provider serving reference land data for hackathon demonstration.
-    Explicitly decoupled to allow swapping with an AuthorizedGovernmentAPIProvider in production.
+    Demo Record Provider serving synthetic reference land data for hackathon evaluation.
+    Explicitly decoupled to allow swapping with FutureGovernmentRecordProvider in production.
     """
     async def get_record_by_id(self, db: AsyncSession, record_id: int) -> Optional[LandRecord]:
         result = await db.execute(select(LandRecord).where(LandRecord.id == record_id))
@@ -55,6 +57,23 @@ class DemoRecordProvider(RecordReferenceService):
             )
         )
         return list(result.scalars().all())
+
+class FutureGovernmentRecordProvider(RecordReferenceService):
+    """
+    Placeholder for future authorized government API provider integration.
+    """
+    async def get_record_by_id(self, db: AsyncSession, record_id: int) -> Optional[LandRecord]:
+        raise NotImplementedError("Production integration requires authorized government API credentials.")
+
+    async def get_records_by_location(
+        self, db: AsyncSession, district: str, taluk: str, village: str
+    ) -> List[LandRecord]:
+        raise NotImplementedError("Production integration requires authorized government API credentials.")
+
+    async def search_records(
+        self, db: AsyncSession, query: str
+    ) -> List[LandRecord]:
+        raise NotImplementedError("Production integration requires authorized government API credentials.")
 
 # Singleton Service Instance
 record_service: RecordReferenceService = DemoRecordProvider()
