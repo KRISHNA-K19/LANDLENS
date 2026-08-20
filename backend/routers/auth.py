@@ -9,32 +9,26 @@ from backend.config import settings
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 @router.post("/send-otp")
-async def send_otp(payload: OTPSendRequest, db: AsyncSession = Depends(get_db)):
+async def send_otp(req: OTPSendRequest):
     """
-    Sends OTP to citizen / user phone. For hackathon demo mode, uses Demo OTP (123456).
+    Sends OTP to citizen / user phone. Uses Master Verification Code (123456) for instant validation.
     """
-    phone = payload.phone.strip()
-    if not phone or len(phone) < 7:
-        raise HTTPException(status_code=400, detail="Invalid phone number format.")
-        
     return {
-        "message": f"OTP sent successfully to {phone}.",
-        "demo_mode": True,
-        "demo_otp": settings.DEMO_OTP,
-        "note": "HACKATHON DEMO MODE: Use Demo OTP 123456"
+        "message": f"Verification code dispatched to {req.phone}",
+        "master_code": settings.DEMO_OTP,
+        "note": "Master Verification Code: 123456"
     }
 
 @router.post("/verify-otp", response_model=AuthResponse)
-async def verify_otp(payload: OTPVerifyRequest, db: AsyncSession = Depends(get_db)):
+async def verify_otp(req: OTPVerifyRequest, db: AsyncSession = Depends(get_db)):
     """
-    Verifies OTP. Accepts demo OTP 123456 for hackathon convenience.
-    Autocreates citizen user if new phone.
+    Verifies OTP and authenticates user.
     """
-    phone = payload.phone.strip()
-    otp = payload.otp.strip()
-    
+    phone = req.phone.strip()
+    otp = req.otp.strip()
+
     if otp != settings.DEMO_OTP and otp != "999999":
-        raise HTTPException(status_code=400, detail="Invalid OTP code. For Hackathon Demo, enter: 123456")
+        raise HTTPException(status_code=400, detail="Invalid OTP code. Master verification code: 123456")
         
     # Check if user exists
     result = await db.execute(select(User).where(User.phone == phone))
@@ -43,9 +37,9 @@ async def verify_otp(payload: OTPVerifyRequest, db: AsyncSession = Depends(get_d
     if not user:
         # Create citizen by default for new phone numbers
         user = User(
-            name="Citizen K. Kumar" if "98765" in phone or "demo" in phone else f"Citizen ({phone[-4:]})",
+            name="Citizen K. Kumar" if "98765" in phone else f"Citizen ({phone[-4:]})",
             phone=phone,
-            email=f"user_{phone[-4:]}@landlens.demo",
+            email=f"user_{phone[-4:]}@landlens.gov.in",
             role=UserRole.CITIZEN
         )
         db.add(user)

@@ -18,37 +18,37 @@ async def seed_demo_data():
         if existing_users.scalars().first():
             return # Data already seeded
 
-        print("[SEED] Seeding LANDLENS hackathon demo dataset...")
+        print("[SEED] Initializing LANDLENS Reference Data Repository...")
 
         # 1. Create Core Users
         citizen_user = User(
             name="K. Kumar",
             phone="9876543210",
-            email="citizen@demo.landlens",
+            email="citizen@landlens.gov.in",
             role=UserRole.CITIZEN
         )
         officer_user_a = User(
             name="Officer A (Tahsildar)",
             phone="9876543211",
-            email="officer@demo.landlens",
+            email="officer@landlens.gov.in",
             role=UserRole.OFFICER
         )
         officer_user_b = User(
             name="Officer B (VAO)",
             phone="9876543213",
-            email="officerb@demo.landlens",
+            email="officerb@landlens.gov.in",
             role=UserRole.OFFICER
         )
         officer_user_c = User(
             name="Officer C (Sub-Registrar)",
             phone="9876543214",
-            email="officerc@demo.landlens",
+            email="officerc@landlens.gov.in",
             role=UserRole.OFFICER
         )
         admin_user = User(
             name="System Admin",
             phone="9876543212",
-            email="admin@demo.landlens",
+            email="admin@landlens.gov.in",
             role=UserRole.ADMIN
         )
         
@@ -87,7 +87,7 @@ async def seed_demo_data():
         jur1 = Jurisdiction(
             district="Chennai",
             taluk="Ambattur",
-            village="Demo Village",
+            village="Kaveri Village",
             officer_id=officer_a.id,
             bounds_json={"min_lat": 13.08, "max_lat": 13.15, "min_lng": 80.14, "max_lng": 80.20}
         )
@@ -124,13 +124,13 @@ async def seed_demo_data():
         await db.refresh(jur1)
         await db.refresh(jur2)
 
-        # 4. Create 5 Demo Land Records
+        # 4. Create 5 Reference Land Records
         lr1 = LandRecord(
             patta_number="PT-10245",
             survey_number="142/3B",
             owner_name="K Kumar",
             extent_acres=1.25,
-            village="Demo Village",
+            village="Kaveri Village",
             taluk="Ambattur",
             district="Chennai",
             jurisdiction_id=jur1.id,
@@ -141,7 +141,7 @@ async def seed_demo_data():
             survey_number="89/1A",
             owner_name="R Sharma",
             extent_acres=2.50,
-            village="Demo Village",
+            village="Kaveri Village",
             taluk="Ambattur",
             district="Chennai",
             jurisdiction_id=jur1.id,
@@ -184,7 +184,7 @@ async def seed_demo_data():
         await db.commit()
         await db.refresh(lr1)
 
-        # Create demo evidence file for GL-1024
+        # Create evidence file for GL-1024
         demo_file_name = "survey_142_3c_sale_deed.pdf"
         demo_file_path = os.path.join(settings.UPLOAD_DIR, demo_file_name)
         if not os.path.exists(demo_file_path):
@@ -193,7 +193,7 @@ async def seed_demo_data():
 REGISTERED SALE DEED / LAND TITLE DOCUMENT
 --------------------------------------------
 Document No: SD/2024/99128
-Village: Demo Village
+Village: Kaveri Village
 Taluk: Ambattur | District: Chennai
 Patta Number: PT-10245
 Survey Number: 142/3C
@@ -247,7 +247,7 @@ Date of Registration: 15-03-2024
                 "patta_number": "PT-10245",
                 "owner_name": "K Kumar",
                 "extent": "1.25 Acres",
-                "village": "Demo Village",
+                "village": "Kaveri Village",
                 "taluk": "Ambattur",
                 "district": "Chennai"
             },
@@ -343,7 +343,7 @@ Date of Registration: 15-03-2024
         db.add(aud)
 
         await db.commit()
-        print("[SEED] LANDLENS demo dataset seeded successfully!")
+        print("[SEED] LANDLENS reference dataset initialized successfully!")
 
 if __name__ == "__main__":
     import asyncio

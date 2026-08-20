@@ -55,7 +55,7 @@ async def locate_land_and_jurisdiction(
     officer_designation = jur.officer.designation if (jur and jur.officer) else "Revenue Officer"
     
     return {
-        "disclaimer": "Government records remain the authoritative source. LANDLENS reference data used for demo verification.",
+        "notice": "State land registries maintain final legal authority. LANDLENS operates as an intelligent civil verification layer.",
         "district": district,
         "taluk": taluk,
         "village": village,

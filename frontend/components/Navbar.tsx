@@ -29,20 +29,20 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-slate-900 text-white shadow-md border-b border-slate-800">
-      {/* Top Hackathon Demo Notice Banner */}
-      <div className="bg-slate-950 text-slate-300 text-xs px-4 py-1.5 flex flex-col md:flex-row justify-between items-center border-b border-slate-800">
+      {/* Top Authoritative Notice Banner */}
+      <div className="bg-slate-900 text-slate-300 text-[11px] py-1.5 px-4 flex justify-between items-center border-b border-slate-800">
         <div className="flex items-center space-x-2">
-          <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-bold px-2 py-0.5 rounded">
-            DEMO MODE
+          <span className="bg-emerald-600 text-white font-extrabold text-[9px] px-2 py-0.5 rounded tracking-wider">
+            CIVIL VERIFICATION PORTAL
           </span>
-          <span className="truncate">
-            Government land records remain authoritative. Demo dataset active.
+          <span className="hidden sm:inline">
+            Official Land Record Verification Layer. Final legal authority rests with jurisdiction officers.
           </span>
         </div>
-        <div className="flex items-center space-x-4 mt-1 md:mt-0 font-medium">
-          <span className="text-slate-400">Primary Demo Case:</span>
-          <Link href="/officer/case/GL-1024" className="text-emerald-400 hover:underline flex items-center gap-1 font-mono text-[11px]">
-            <Eye className="w-3 h-3" /> GL-1024 (Survey 142/3B vs 142/3C)
+        <div className="flex items-center space-x-3 text-[10px]">
+          <span className="text-slate-400">Featured Case:</span>
+          <Link href="/citizen/case/GL-1024" className="font-mono text-amber-400 font-bold hover:underline">
+            GL-1024 (Survey 142/3B vs 142/3C)
           </Link>
         </div>
       </div>

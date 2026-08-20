@@ -11,7 +11,7 @@ const MapComponent = dynamic(() => import('@/components/MapComponent'), { ssr: f
 export default function LocateLandPage() {
   const [district, setDistrict] = useState<string>('Chennai');
   const [taluk, setTaluk] = useState<string>('Ambattur');
-  const [village, setVillage] = useState<string>('Demo Village');
+  const [village, setVillage] = useState<string>('Kaveri Village');
 
   const [jurisdiction, setJurisdiction] = useState<Jurisdiction | null>(null);
   const [records, setRecords] = useState<LandRecord[]>([]);
@@ -101,7 +101,7 @@ export default function LocateLandPage() {
                     onChange={(e) => setVillage(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 font-medium"
                   >
-                    <option value="Demo Village">Demo Village</option>
+                    <option value="Kaveri Village">Kaveri Village</option>
                     <option value="East Village">East Village</option>
                     <option value="West Village">West Village</option>
                     <option value="South Village">South Village</option>
@@ -130,7 +130,7 @@ export default function LocateLandPage() {
                   Designation: {jurisdiction.officer_designation || 'Tahsildar'}
                 </div>
                 <div className="text-slate-600 font-mono pt-1 border-t border-emerald-200/60">
-                  {village} Village | {taluk} Taluk | {district}
+                  {village} | {taluk} Taluk | {district}
                 </div>
               </div>
             ) : (
@@ -143,7 +143,7 @@ export default function LocateLandPage() {
           {/* Reference Land Records Card */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-sm text-slate-900">Reference / Demo Records</h3>
+              <h3 className="font-bold text-sm text-slate-900">Official Land Records (Reference)</h3>
               <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">
                 {records.length} Found
               </span>

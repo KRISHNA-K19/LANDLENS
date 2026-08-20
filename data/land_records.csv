@@ -1,14 +1,14 @@
 record_id,patta_number,survey_number,owner_name,extent_acres,village,taluk,district,land_type,last_updated,status
-1,PT-10245,142/3B,K. Kumar,1.25,Demo Village,Ambattur,Chennai,Nanjai,2024-01-15,ACTIVE
-2,PT-88210,89/1A,R. Sharma,2.50,Demo Village,Ambattur,Chennai,Punjai,2023-11-20,ACTIVE
+1,PT-10245,142/3B,K. Kumar,1.25,Kaveri Village,Ambattur,Chennai,Nanjai,2024-01-15,ACTIVE
+2,PT-88210,89/1A,R. Sharma,2.50,Kaveri Village,Ambattur,Chennai,Punjai,2023-11-20,ACTIVE
 3,PT-30112,204/5,M. Anbazhagan,0.75,East Village,Ambattur,Chennai,Nanjai,2024-02-10,ACTIVE
 4,PT-55019,12/4A,S. Priya,3.10,West Village,Sriperumbudur,Kanchipuram,Punjai,2023-09-05,ACTIVE
 5,PT-99401,310/2C,V. Ramanathan,1.80,North Village,Ponneri,Tiruvallur,Nanjai,2024-03-01,ACTIVE
-6,PT-10246,142/4A,A. Selvam,0.85,Demo Village,Ambattur,Chennai,Nanjai,2023-12-12,ACTIVE
-7,PT-10247,143/1,B. Sundaram,2.10,Demo Village,Ambattur,Chennai,Punjai,2024-01-08,ACTIVE
-8,PT-10248,145/2B,C. Kavitha,1.50,Demo Village,Ambattur,Chennai,Nanjai,2023-10-30,ACTIVE
-9,PT-10249,146/3,D. Rajesh,4.20,Demo Village,Ambattur,Chennai,Punjai,2024-02-28,ACTIVE
-10,PT-10250,147/1A,E. Lakshmi,0.60,Demo Village,Ambattur,Chennai,Nanjai,2023-08-19,ACTIVE
+6,PT-10246,142/4A,A. Selvam,0.85,Kaveri Village,Ambattur,Chennai,Nanjai,2023-12-12,ACTIVE
+7,PT-10247,143/1,B. Sundaram,2.10,Kaveri Village,Ambattur,Chennai,Punjai,2024-01-08,ACTIVE
+8,PT-10248,145/2B,C. Kavitha,1.50,Kaveri Village,Ambattur,Chennai,Nanjai,2023-10-30,ACTIVE
+9,PT-10249,146/3,D. Rajesh,4.20,Kaveri Village,Ambattur,Chennai,Punjai,2024-02-28,ACTIVE
+10,PT-10250,147/1A,E. Lakshmi,0.60,Kaveri Village,Ambattur,Chennai,Nanjai,2023-08-19,ACTIVE
 11,PT-20101,55/2A,F. Venkatesh,1.10,East Village,Ambattur,Chennai,Nanjai,2024-01-22,ACTIVE
 12,PT-20102,56/1,G. Geetha,2.00,East Village,Ambattur,Chennai,Punjai,2023-11-15,ACTIVE
 13,PT-20103,57/3B,H. Balaji,1.45,East Village,Ambattur,Chennai,Nanjai,2024-02-14,ACTIVE
@@ -29,8 +29,8 @@ record_id,patta_number,survey_number,owner_name,extent_acres,village,taluk,distr
 28,PT-50403,212/2A,W. Usha,1.85,North Village,Ponneri,Tiruvallur,Nanjai,2023-11-05,ACTIVE
 29,PT-50404,213/4,X. Mohan,3.15,North Village,Ponneri,Tiruvallur,Punjai,2024-02-25,ACTIVE
 30,PT-50405,214/1C,Y. Devi,1.35,North Village,Ponneri,Tiruvallur,Nanjai,2023-09-18,ACTIVE
-31,PT-60501,15/2,Z. Manikandan,2.10,Demo Village,Ambattur,Chennai,Punjai,2024-01-05,ACTIVE
-32,PT-60502,16/1A,A. Chitra,0.95,Demo Village,Ambattur,Chennai,Nanjai,2023-10-22,ACTIVE
+31,PT-60501,15/2,Z. Manikandan,2.10,Kaveri Village,Ambattur,Chennai,Punjai,2024-01-05,ACTIVE
+32,PT-60502,16/1A,A. Chitra,0.95,Kaveri Village,Ambattur,Chennai,Nanjai,2023-10-22,ACTIVE
 33,PT-60503,17/3B,B. Ashok,1.60,East Village,Ambattur,Chennai,Punjai,2024-02-18,ACTIVE
 34,PT-60504,18/4,C. Malathi,2.75,East Village,Ambattur,Chennai,Nanjai,2023-12-30,ACTIVE
 35,PT-60505,19/1C,D. Senthil,1.05,West Village,Sriperumbudur,Kanchipuram,Punjai,2024-01-25,ACTIVE
@@ -39,12 +39,12 @@ record_id,patta_number,survey_number,owner_name,extent_acres,village,taluk,distr
 38,PT-70603,222/3A,G. Anuradha,0.80,South Village,Sriperumbudur,Kanchipuram,Nanjai,2023-11-28,ACTIVE
 39,PT-70604,223/4,H. Dinakar,2.30,North Village,Ponneri,Tiruvallur,Punjai,2024-01-14,ACTIVE
 40,PT-70605,224/1C,I. Yamuna,1.90,North Village,Ponneri,Tiruvallur,Nanjai,2023-10-05,ACTIVE
-41,PT-80701,330/1A,J. Prem,1.15,Demo Village,Ambattur,Chennai,Nanjai,2024-02-22,ACTIVE
+41,PT-80701,330/1A,J. Prem,1.15,Kaveri Village,Ambattur,Chennai,Nanjai,2024-02-22,ACTIVE
 42,PT-80702,331/2B,K. Indira,2.60,East Village,Ambattur,Chennai,Punjai,2023-12-15,ACTIVE
 43,PT-80703,332/3,L. Harish,0.65,West Village,Sriperumbudur,Kanchipuram,Nanjai,2024-01-02,ACTIVE
 44,PT-80704,333/4A,M. Soundarya,3.00,South Village,Sriperumbudur,Kanchipuram,Punjai,2023-09-30,ACTIVE
 45,PT-80705,334/1C,N. Vijayakumar,1.55,North Village,Ponneri,Tiruvallur,Nanjai,2024-02-12,ACTIVE
-46,PT-90801,440/2A,O. Bhavani,2.20,Demo Village,Ambattur,Chennai,Punjai,2023-11-18,ACTIVE
+46,PT-90801,440/2A,O. Bhavani,2.20,Kaveri Village,Ambattur,Chennai,Punjai,2023-11-18,ACTIVE
 47,PT-90802,441/1B,P. Gowtham,0.90,East Village,Ambattur,Chennai,Nanjai,2024-01-20,ACTIVE
 48,PT-90803,442/3C,Q. Nithya,1.70,West Village,Sriperumbudur,Kanchipuram,Punjai,2023-10-28,ACTIVE
 49,PT-90804,443/4,R. Dinesh,2.95,South Village,Sriperumbudur,Kanchipuram,Nanjai,2024-02-05,ACTIVE

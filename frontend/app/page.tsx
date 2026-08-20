@@ -160,11 +160,11 @@ export default function LandingPage() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <div className="inline-flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider mb-1">
-              🏆 Primary Hackathon Demonstration Case
+              ⭐ Primary Verification Case Study
             </div>
             <h3 className="text-2xl font-bold text-white">Case GL-1024 (Survey Number Discrepancy)</h3>
             <p className="text-slate-400 text-sm">
-              Citizen K. Kumar owns Patta <code className="text-blue-300">PT-10245</code> in Ambattur Demo Village.
+              Citizen K. Kumar holds Patta <code className="text-blue-300">PT-10245</code> in Ambattur Kaveri Village.
             </p>
           </div>
 

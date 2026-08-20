@@ -20,17 +20,22 @@ class NotificationService:
         sms_sent = False
 
         # Attempt Twilio SMS delivery if credentials exist
-        if settings.TWILIO_ACCOUNT_SID and settings.TWILIO_AUTH_TOKEN and settings.TWILIO_PHONE_NUMBER:
+        if settings.TWILIO_ACCOUNT_SID and settings.TWILIO_AUTH_TOKEN:
             try:
                 from twilio.rest import Client
                 client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+                from_number = settings.TWILIO_PHONE_NUMBER or "+18449912899"
+                
+                # Format phone number for international format if needed
+                formatted_phone = phone if phone.startswith("+") else f"+91{phone}"
+                
                 client.messages.create(
                     body=f"LANDLENS Alert: {title}\n{message}",
-                    from_=settings.TWILIO_PHONE_NUMBER,
-                    to=phone
+                    from_=from_number,
+                    to=formatted_phone
                 )
                 sms_sent = True
-                logger.info(f"Twilio SMS sent to {phone}")
+                logger.info(f"Twilio SMS sent to {formatted_phone}")
             except Exception as e:
                 logger.warning(f"Twilio SMS sending failed for {phone}: {e}. Falling back to In-App Notification.")
 

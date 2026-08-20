@@ -8,7 +8,7 @@ interface MapComponentProps {
 }
 
 const VILLAGES_DATA = [
-  { name: 'Demo Village', taluk: 'Ambattur', district: 'Chennai', lat: 13.114, lng: 80.154, officer: 'Officer A (Tahsildar)', survey: '142/3B' },
+  { name: 'Kaveri Village', taluk: 'Ambattur', district: 'Chennai', lat: 13.114, lng: 80.154, officer: 'Officer A (Tahsildar)', survey: '142/3B' },
   { name: 'East Village', taluk: 'Ambattur', district: 'Chennai', lat: 13.120, lng: 80.210, officer: 'Officer A (Tahsildar)', survey: '204/5' },
   { name: 'West Village', taluk: 'Sriperumbudur', district: 'Kanchipuram', lat: 12.980, lng: 79.950, officer: 'Officer B (VAO)', survey: '12/4A' },
   { name: 'South Village', taluk: 'Sriperumbudur', district: 'Kanchipuram', lat: 12.930, lng: 79.980, officer: 'Officer B (VAO)', survey: '88/2' },
@@ -16,7 +16,7 @@ const VILLAGES_DATA = [
 ];
 
 export default function MapComponent({ onSelectJurisdiction, selectedVillage }: MapComponentProps) {
-  const [activeVillage, setActiveVillage] = useState<string>(selectedVillage || 'Demo Village');
+  const [activeVillage, setActiveVillage] = useState<string>(selectedVillage || 'Kaveri Village');
 
   useEffect(() => {
     if (selectedVillage) {

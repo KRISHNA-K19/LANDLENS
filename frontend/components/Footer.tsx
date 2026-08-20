@@ -36,8 +36,8 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500">
           <p>© 2026 LANDLENS - Citizen-Centric Land Record Verification & Grievance Resolution Platform</p>
           <div className="flex space-x-6">
-            <span>Primary Demo Scenario: GL-1024</span>
-            <span>Demo OTP: 123456</span>
+            <span>Primary Case Study: GL-1024</span>
+            <span>Master Verification Code: 123456</span>
           </div>
         </div>
       </div>

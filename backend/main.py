@@ -54,5 +54,5 @@ async def root():
         "tagline": "Citizen-Centric Land Record Verification & Grievance Resolution Platform",
         "version": settings.VERSION,
         "docs": "/docs",
-        "demo_scenario": "GL-1024 (Survey No 142/3B vs 142/3C)"
+        "reference_case": "GL-1024 (Survey No 142/3B vs 142/3C)"
     }
