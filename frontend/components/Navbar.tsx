@@ -137,8 +137,15 @@ export default function Navbar() {
           )}
         </nav>
 
-        {/* Role Switcher Pill */}
+        {/* Role Switcher Pill & Dedicated Login Link */}
         <div className="flex items-center space-x-3">
+          <Link
+            href="/login"
+            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-blue-300 font-bold border border-slate-700 rounded-lg text-xs transition flex items-center gap-1.5"
+          >
+            <UserCheck className="w-3.5 h-3.5 text-blue-400" /> Sign In
+          </Link>
+
           <div className="bg-slate-800 border border-slate-700 rounded-lg p-1 flex items-center space-x-1">
             <button
               onClick={() => handleRoleChange('CITIZEN')}
@@ -146,7 +153,7 @@ export default function Navbar() {
                 activeRole === 'CITIZEN' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <UserCheck className="w-3.5 h-3.5" /> Citizen
+              Citizen
             </button>
             <button
               onClick={() => handleRoleChange('OFFICER')}
@@ -154,7 +161,7 @@ export default function Navbar() {
                 activeRole === 'OFFICER' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Briefcase className="w-3.5 h-3.5" /> Officer
+              Officer
             </button>
             <button
               onClick={() => handleRoleChange('ADMIN')}
@@ -162,7 +169,7 @@ export default function Navbar() {
                 activeRole === 'ADMIN' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Settings className="w-3.5 h-3.5" /> Admin
+              Admin
             </button>
           </div>
         </div>

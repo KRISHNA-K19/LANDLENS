@@ -97,3 +97,71 @@ async def get_audit_logs(
         select(AuditLog).order_by(AuditLog.timestamp.desc()).limit(limit)
     )
     return [AuditLogSchema.model_validate(log) for log in result.scalars().all()]
+
+@router.post("/jurisdictions/assign-officer")
+async def assign_officer_to_jurisdiction(
+    jurisdiction_id: int = Query(...),
+    officer_id: int = Query(...),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Assigns or reassigns a revenue officer to a specific jurisdiction.
+    """
+    jur = (await db.execute(select(Jurisdiction).where(Jurisdiction.id == jurisdiction_id))).scalars().first()
+    if not jur:
+        raise HTTPException(status_code=404, detail="Jurisdiction not found.")
+
+    off = (await db.execute(select(Officer).options(selectinload(Officer.user)).where(Officer.id == officer_id))).scalars().first()
+    if not off:
+        raise HTTPException(status_code=404, detail="Officer not found.")
+
+    jur.officer_id = off.id
+    
+    # Audit Log
+    aud = AuditLog(
+        actor_name="System Admin",
+        actor_role="ADMIN",
+        action="JURISDICTION_OFFICER_ASSIGNED",
+        metadata_json={"jurisdiction": f"{jur.village}, {jur.taluk}, {jur.district}", "assigned_officer": off.user.name if off.user else "Officer"}
+    )
+    db.add(aud)
+    await db.commit()
+    return {"status": "SUCCESS", "message": f"Assigned {off.user.name if off.user else 'Officer'} to {jur.village} Jurisdiction."}
+
+@router.post("/cases/{case_id}/reassign-officer")
+async def reassign_case_officer(
+    case_id: str,
+    officer_id: int = Query(...),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Manually reassigns a specific grievance case to a designated officer.
+    """
+    # Lookup grievance by ID or case_code
+    if case_id.isdigit():
+        g = (await db.execute(select(Grievance).where(Grievance.id == int(case_id)))).scalars().first()
+    else:
+        g = (await db.execute(select(Grievance).where(Grievance.case_code == case_id))).scalars().first()
+
+    if not g:
+        raise HTTPException(status_code=404, detail="Grievance case not found.")
+
+    off = (await db.execute(select(Officer).options(selectinload(Officer.user)).where(Officer.id == officer_id))).scalars().first()
+    if not off:
+        raise HTTPException(status_code=404, detail="Officer not found.")
+
+    # Find or update jurisdiction officer
+    jur = (await db.execute(select(Jurisdiction).where(Jurisdiction.id == g.jurisdiction_id))).scalars().first()
+    if jur:
+        jur.officer_id = off.id
+
+    aud = AuditLog(
+        actor_name="System Admin",
+        actor_role="ADMIN",
+        action="CASE_OFFICER_REASSIGNED",
+        case_code=g.case_code,
+        metadata_json={"reassigned_officer": off.user.name if off.user else "Officer"}
+    )
+    db.add(aud)
+    await db.commit()
+    return {"status": "SUCCESS", "message": f"Case {g.case_code} reassigned to {off.user.name if off.user else 'Officer'}."}
