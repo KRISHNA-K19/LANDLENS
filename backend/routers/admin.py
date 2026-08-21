@@ -155,13 +155,86 @@ async def reassign_case_officer(
     if jur:
         jur.officer_id = off.id
 
+@router.post("/officers")
+async def create_officer(
+    name: str = Query(...),
+    employee_code: str = Query(...),
+    designation: str = Query("Tahsildar"),
+    district: str = Query("Chennai"),
+    taluk: str = Query("Ambattur"),
+    village: str = Query("Kaveri Village"),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Creates a new Revenue Officer and provisions an administrative jurisdiction mapping.
+    """
+    # Create or retrieve user profile
+    res_user = await db.execute(select(User).where(User.email == f"{employee_code.lower()}@landlens.gov.in"))
+    usr = res_user.scalars().first()
+    if not usr:
+        usr = User(
+            name=name,
+            phone="9876543210",
+            email=f"{employee_code.lower()}@landlens.gov.in",
+            role=UserRole.OFFICER
+        )
+        db.add(usr)
+        await db.commit()
+        await db.refresh(usr)
+
+    # Create Officer record
+    res_off = await db.execute(select(Officer).where(Officer.employee_code == employee_code))
+    off = res_off.scalars().first()
+    if not off:
+        off = Officer(
+            user_id=usr.id,
+            employee_code=employee_code,
+            designation=designation
+        )
+        db.add(off)
+        await db.commit()
+        await db.refresh(off)
+
+    # Create or update Jurisdiction mapping
+    res_jur = await db.execute(
+        select(Jurisdiction).where(
+            Jurisdiction.district == district,
+            Jurisdiction.taluk == taluk,
+            Jurisdiction.village == village
+        )
+    )
+    jur = res_jur.scalars().first()
+    if not jur:
+        jur = Jurisdiction(
+            district=district,
+            taluk=taluk,
+            village=village,
+            officer_id=off.id
+        )
+        db.add(jur)
+    else:
+        jur.officer_id = off.id
+    await db.commit()
+
+    # Audit Log
     aud = AuditLog(
         actor_name="System Admin",
         actor_role="ADMIN",
-        action="CASE_OFFICER_REASSIGNED",
-        case_code=g.case_code,
-        metadata_json={"reassigned_officer": off.user.name if off.user else "Officer"}
+        action="OFFICER_CREATED",
+        metadata_json={"officer_name": name, "employee_code": employee_code, "jurisdiction": f"{village}, {taluk}, {district}"}
     )
     db.add(aud)
     await db.commit()
-    return {"status": "SUCCESS", "message": f"Case {g.case_code} reassigned to {off.user.name if off.user else 'Officer'}."}
+
+    return {
+        "status": "SUCCESS",
+        "message": f"Officer '{name}' ({employee_code}) created and assigned to {village}, {taluk}, {district}.",
+        "officer": {
+            "id": off.id,
+            "name": name,
+            "code": employee_code,
+            "designation": designation,
+            "jurisdiction": f"{district} ({taluk} - {village})"
+        }
+    }
+

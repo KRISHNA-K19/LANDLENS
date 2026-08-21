@@ -1,10 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, ShieldCheck, Settings, Plus, CheckCircle2 } from 'lucide-react';
 
+interface JurisdictionItem {
+  id: number;
+  district: string;
+  taluk: string;
+  village: string;
+  officer: string;
+}
+
 export default function AdminJurisdictionsPage() {
-  const [jurisdictions, setJurisdictions] = useState([
+  const [jurisdictions, setJurisdictions] = useState<JurisdictionItem[]>([
     { id: 1, district: "Chennai", taluk: "Ambattur", village: "Kaveri Village", officer: "Officer A (Tahsildar)" },
     { id: 2, district: "Chennai", taluk: "Ambattur", village: "East Village", officer: "Officer A (Tahsildar)" },
     { id: 3, district: "Kanchipuram", taluk: "Sriperumbudur", village: "West Village", officer: "Officer B (VAO)" },
@@ -15,10 +23,28 @@ export default function AdminJurisdictionsPage() {
   const [selectedJur, setSelectedJur] = useState<number | null>(null);
   const [targetOfficer, setTargetOfficer] = useState<string>("Officer A (Tahsildar)");
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('landlens_admin_jurisdictions');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.length > 0) {
+            setJurisdictions([...parsed, ...jurisdictions.filter(j => !parsed.some((p: any) => p.village === j.village))]);
+          }
+        } catch (e) {}
+      }
+    }
+  }, []);
+
   const handleUpdateMapping = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedJur) return;
-    setJurisdictions(jurisdictions.map(j => j.id === selectedJur ? { ...j, officer: targetOfficer } : j));
+    const updated = jurisdictions.map(j => j.id === selectedJur ? { ...j, officer: targetOfficer } : j);
+    setJurisdictions(updated);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('landlens_admin_jurisdictions', JSON.stringify(updated));
+    }
     setSelectedJur(null);
   };
 
@@ -29,7 +55,7 @@ export default function AdminJurisdictionsPage() {
           <h1 className="text-2xl font-extrabold text-slate-900 flex items-center gap-2">
             <MapPin className="w-6 h-6 text-purple-700" /> Administrative Jurisdiction Hierarchy
           </h1>
-          <p className="text-xs text-slate-600">Configure administrative boundary routing: District ➔ Taluk ➔ Village ➔ Assigned Officer.</p>
+          <p className="text-xs text-slate-600">Configure administrative boundary routing: District ➔ Taluk ➔ Village ➔ Assigned Revenue Officer.</p>
         </div>
       </div>
 
@@ -71,6 +97,7 @@ export default function AdminJurisdictionsPage() {
                 <option value="Officer A (Tahsildar)">Officer A (Tahsildar)</option>
                 <option value="Officer B (VAO)">Officer B (VAO)</option>
                 <option value="Officer C (Sub-Registrar)">Officer C (Sub-Registrar)</option>
+                <option value="Officer D (Revenue Inspector)">Officer D (Revenue Inspector)</option>
               </select>
             </div>
 
