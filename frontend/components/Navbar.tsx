@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { ShieldCheck, UserCheck, Briefcase, Settings, FileText, MapPin, Eye } from 'lucide-react';
+import { ShieldCheck, UserCheck, Briefcase, Settings, FileText, MapPin, Eye, LogOut, KeyRound } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -11,20 +11,70 @@ export default function Navbar() {
 
   // Active Role state stored in localStorage (default CITIZEN)
   const [activeRole, setActiveRole] = useState<'CITIZEN' | 'OFFICER' | 'ADMIN'>('CITIZEN');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    const savedRole = localStorage.getItem('landlens_role');
-    if (savedRole === 'OFFICER' || savedRole === 'ADMIN' || savedRole === 'CITIZEN') {
-      setActiveRole(savedRole);
-    }
-  }, []);
+    checkRoleAndAuth();
+  }, [pathname]);
 
-  const handleRoleChange = (newRole: 'CITIZEN' | 'OFFICER' | 'ADMIN') => {
+  const checkRoleAndAuth = () => {
+    let currentRole: 'CITIZEN' | 'OFFICER' | 'ADMIN' = 'CITIZEN';
+
+    if (pathname.startsWith('/officer')) {
+      currentRole = 'OFFICER';
+    } else if (pathname.startsWith('/admin')) {
+      currentRole = 'ADMIN';
+    } else if (pathname.startsWith('/citizen')) {
+      currentRole = 'CITIZEN';
+    } else {
+      const saved = localStorage.getItem('landlens_role') as any;
+      if (saved === 'OFFICER' || saved === 'ADMIN' || saved === 'CITIZEN') {
+        currentRole = saved;
+      }
+    }
+
+    setActiveRole(currentRole);
+
+    const isAuth = localStorage.getItem(`landlens_auth_${currentRole.toLowerCase()}`) === 'true';
+    setIsAuthenticated(isAuth);
+
+    // Enforce authentication on protected dashboard routes
+    const isProtectedDashboard =
+      (pathname.startsWith('/citizen/') && !pathname.includes('/citizen/login') && !pathname.includes('/citizen/register')) ||
+      (pathname.startsWith('/officer/') && !pathname.includes('/officer/login')) ||
+      (pathname.startsWith('/admin/') && !pathname.includes('/admin/login'));
+
+    if (isProtectedDashboard && !isAuth) {
+      if (currentRole === 'CITIZEN') router.push('/citizen/login');
+      else if (currentRole === 'OFFICER') router.push('/officer/login');
+      else if (currentRole === 'ADMIN') router.push('/admin/login');
+    }
+  };
+
+  const handleRoleSelect = (newRole: 'CITIZEN' | 'OFFICER' | 'ADMIN') => {
     setActiveRole(newRole);
     localStorage.setItem('landlens_role', newRole);
-    if (newRole === 'CITIZEN') router.push('/citizen/dashboard');
-    else if (newRole === 'OFFICER') router.push('/officer/dashboard');
-    else if (newRole === 'ADMIN') router.push('/admin/dashboard');
+
+    const isAuthForRole = localStorage.getItem(`landlens_auth_${newRole.toLowerCase()}`) === 'true';
+
+    if (isAuthForRole) {
+      if (newRole === 'CITIZEN') router.push('/citizen/dashboard');
+      else if (newRole === 'OFFICER') router.push('/officer/dashboard');
+      else if (newRole === 'ADMIN') router.push('/admin/dashboard');
+    } else {
+      // Require login through dedicated portal
+      if (newRole === 'CITIZEN') router.push('/citizen/login');
+      else if (newRole === 'OFFICER') router.push('/officer/login');
+      else if (newRole === 'ADMIN') router.push('/admin/login');
+    }
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem(`landlens_auth_${activeRole.toLowerCase()}`);
+    setIsAuthenticated(false);
+    if (activeRole === 'CITIZEN') router.push('/citizen/login');
+    else if (activeRole === 'OFFICER') router.push('/officer/login');
+    else if (activeRole === 'ADMIN') router.push('/admin/login');
   };
 
   return (
@@ -105,12 +155,12 @@ export default function Navbar() {
                 <Briefcase className="w-4 h-4" /> Case Queue
               </Link>
               <Link
-                href="/officer/case/GL-1024"
+                href="/officer/cases/1024"
                 className={`px-3 py-2 rounded-md font-medium flex items-center gap-1.5 transition ${
-                  pathname.includes('/officer/case/GL-1024') ? 'bg-amber-600 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800'
+                  pathname.includes('/officer/cases/1024') ? 'bg-amber-600 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                <Eye className="w-4 h-4 text-amber-300" /> Case Review (GL-1024)
+                <Eye className="w-4 h-4 text-amber-300" /> Case Workspace (GL-1024)
               </Link>
             </>
           )}
@@ -123,7 +173,15 @@ export default function Navbar() {
                   pathname.includes('/admin/dashboard') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                <Settings className="w-4 h-4" /> Overview & SLAs
+                <Settings className="w-4 h-4" /> Console Overview
+              </Link>
+              <Link
+                href="/admin/officers"
+                className={`px-3 py-2 rounded-md font-medium flex items-center gap-1.5 transition ${
+                  pathname.includes('/admin/officers') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'
+                }`}
+              >
+                Revenue Officers
               </Link>
               <Link
                 href="/admin/audit-logs"
@@ -137,18 +195,29 @@ export default function Navbar() {
           )}
         </nav>
 
-        {/* Role Switcher Pill & Dedicated Login Link */}
+        {/* Dedicated Role Selection & Authentication Controls */}
         <div className="flex items-center space-x-2 sm:space-x-3">
-          <Link
-            href="/login"
-            className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-blue-300 font-bold border border-slate-700 rounded-lg text-xs transition flex items-center gap-1"
-          >
-            <UserCheck className="w-3.5 h-3.5 text-blue-400" /> Sign In
-          </Link>
+          {isAuthenticated ? (
+            <button
+              onClick={handleSignOut}
+              className="px-2.5 py-1.5 bg-red-900/60 hover:bg-red-800 text-red-200 font-bold border border-red-700/60 rounded-lg text-xs transition flex items-center gap-1"
+              title="Sign Out of Portal"
+            >
+              <LogOut className="w-3.5 h-3.5" /> Sign Out
+            </button>
+          ) : (
+            <Link
+              href={activeRole === 'CITIZEN' ? '/citizen/login' : activeRole === 'OFFICER' ? '/officer/login' : '/admin/login'}
+              className="px-2.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg text-xs transition flex items-center gap-1 shadow-sm"
+            >
+              <KeyRound className="w-3.5 h-3.5" /> {activeRole} Login
+            </Link>
+          )}
 
+          {/* Role Portal Selector */}
           <div className="bg-slate-800 border border-slate-700 rounded-lg p-1 flex items-center space-x-1">
             <button
-              onClick={() => handleRoleChange('CITIZEN')}
+              onClick={() => handleRoleSelect('CITIZEN')}
               className={`px-2.5 py-1 text-xs rounded-md font-medium transition ${
                 activeRole === 'CITIZEN' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
               }`}
@@ -156,17 +225,17 @@ export default function Navbar() {
               Citizen
             </button>
             <button
-              onClick={() => handleRoleChange('OFFICER')}
+              onClick={() => handleRoleSelect('OFFICER')}
               className={`px-2.5 py-1 text-xs rounded-md font-medium transition ${
-                activeRole === 'OFFICER' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                activeRole === 'OFFICER' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'
               }`}
             >
               Officer
             </button>
             <button
-              onClick={() => handleRoleChange('ADMIN')}
+              onClick={() => handleRoleSelect('ADMIN')}
               className={`px-2.5 py-1 text-xs rounded-md font-medium transition ${
-                activeRole === 'ADMIN' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                activeRole === 'ADMIN' ? 'bg-purple-600 text-white shadow' : 'text-slate-400 hover:text-white'
               }`}
             >
               Admin

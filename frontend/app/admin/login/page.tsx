@@ -16,6 +16,7 @@ export default function AdminLoginPage() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
+      localStorage.setItem('landlens_auth_admin', 'true');
       localStorage.setItem('landlens_role', 'ADMIN');
       router.push('/admin/dashboard');
     }, 400);

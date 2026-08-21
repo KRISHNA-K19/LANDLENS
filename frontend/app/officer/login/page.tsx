@@ -16,6 +16,7 @@ export default function OfficerLoginPage() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
+      localStorage.setItem('landlens_auth_officer', 'true');
       localStorage.setItem('landlens_role', 'OFFICER');
       router.push('/officer/dashboard');
     }, 400);
