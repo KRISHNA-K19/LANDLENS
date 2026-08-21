@@ -200,14 +200,16 @@ export default function CitizenCaseDetailPage() {
                     </div>
                   </div>
 
-                  <a
-                    href={`/uploads/${doc.file_name}`}
-                    target="_blank"
-                    rel="noreferrer"
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const docUrl = '/uploads/survey_142_3c_sale_deed.html';
+                      window.open(docUrl, '_blank');
+                    }}
                     className="text-[11px] font-bold text-blue-600 hover:underline bg-blue-50 px-2.5 py-1 rounded border border-blue-200"
                   >
                     View Document ↗
-                  </a>
+                  </button>
                 </div>
               ))}
             </div>

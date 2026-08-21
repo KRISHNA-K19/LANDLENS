@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registered Sale Deed Document Extract — Survey 142/3C</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: #f8fafc; padding: 40px; }
+    .card { background: #1e293b; border: 1px solid #334155; max-width: 700px; margin: 0 auto; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    h1 { font-size: 20px; color: #f59e0b; border-bottom: 2px solid #334155; padding-bottom: 12px; margin-top: 0; font-family: monospace; }
+    .field { margin-bottom: 12px; font-size: 14px; display: flex; justify-space-between; }
+    .label { color: #94a3b8; font-weight: bold; width: 220px; display: inline-block; }
+    .value { color: #f8fafc; font-weight: bold; font-family: monospace; }
+    .highlight { color: #f59e0b; background: rgba(245, 158, 11, 0.15); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .stamp { margin-top: 30px; border-top: 1px dashed #475569; pt-15px; text-align: center; color: #10b981; font-size: 12px; font-weight: bold; letter-spacing: 1px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>REGISTERED SALE DEED EXTRACT (DOCUMENT EVIDENTIARY SUBMISSION)</h1>
+    <div class="field"><span class="label">Document Registration No:</span><span class="value">SD/2024/99128</span></div>
+    <div class="field"><span class="label">Registered Owner Name:</span><span class="value">K. Kumar</span></div>
+    <div class="field"><span class="label">Jurisdiction Village:</span><span class="value">Kaveri Village (Ambattur Taluk, Chennai District)</span></div>
+    <div class="field"><span class="label">Target Survey Identifier:</span><span class="value highlight">142/3C</span></div>
+    <div class="field"><span class="label">Reference Government Patta:</span><span class="value">PT-10245 (Reference: 142/3B)</span></div>
+    <div class="field"><span class="label">Parcel Extent Stated:</span><span class="value">1.25 Acres (Nanjai Wetland)</span></div>
+    <div class="stamp">✓ OFFICIAL EVIDENCE RECORD — SUBMITTED TO LANDLENS VERIFICATION LAYER</div>
+  </div>
+</body>
+</html>
