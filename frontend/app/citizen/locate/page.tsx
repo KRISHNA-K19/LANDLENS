@@ -5,12 +5,10 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { MapPin, Search, ShieldCheck, UserCheck, ArrowRight, Info, CheckCircle2 } from 'lucide-react';
 import { locateLandAndJurisdiction, LandRecord, Jurisdiction } from '@/lib/api';
-import { useLanguage } from '@/context/LanguageContext';
 
 const MapComponent = dynamic(() => import('@/components/MapComponent'), { ssr: false });
 
 export default function LocateLandPage() {
-  const { t } = useLanguage();
   const [district, setDistrict] = useState<string>('Chennai');
   const [taluk, setTaluk] = useState<string>('Ambattur');
   const [village, setVillage] = useState<string>('Kaveri Village');
@@ -47,11 +45,11 @@ export default function LocateLandPage() {
       {/* Header */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-2">
         <div className="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-wider">
-          <MapPin className="w-4 h-4" /> {t('locate_page_step')}
+          <MapPin className="w-4 h-4" /> Step 2: Jurisdiction Routing & Land Search
         </div>
-        <h1 className="text-2xl font-extrabold text-slate-900">{t('locate_page_title')}</h1>
+        <h1 className="text-2xl font-extrabold text-slate-900">Locate My Land</h1>
         <p className="text-sm text-slate-600">
-          {t('locate_desc')}
+          Select your land location using the interactive map or manual dropdown filters to determine the assigned jurisdiction officer.
         </p>
       </div>
 
@@ -60,7 +58,7 @@ export default function LocateLandPage() {
         <div className="lg:col-span-2 space-y-4">
           <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-4">
             <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-blue-600" /> {t('interactive_map')}
+              <MapPin className="w-4 h-4 text-blue-600" /> Interactive Map Selection
             </h3>
 
             {/* Map */}
@@ -68,10 +66,10 @@ export default function LocateLandPage() {
 
             {/* Manual Dropdowns */}
             <div className="border-t border-slate-100 pt-4 space-y-2">
-              <span className="text-xs font-bold text-slate-700 block">{t('manual_jurisdiction')}</span>
+              <span className="text-xs font-bold text-slate-700 block">Manual Jurisdiction Selection (Fallback)</span>
               <div className="grid grid-cols-3 gap-3 text-xs">
                 <div>
-                  <label className="text-slate-500 block mb-1">{t('district')}</label>
+                  <label className="text-slate-500 block mb-1">District</label>
                   <select
                     value={district}
                     onChange={(e) => setDistrict(e.target.value)}
@@ -84,7 +82,7 @@ export default function LocateLandPage() {
                 </div>
 
                 <div>
-                  <label className="text-slate-500 block mb-1">{t('taluk')}</label>
+                  <label className="text-slate-500 block mb-1">Taluk</label>
                   <select
                     value={taluk}
                     onChange={(e) => setTaluk(e.target.value)}
@@ -97,7 +95,7 @@ export default function LocateLandPage() {
                 </div>
 
                 <div>
-                  <label className="text-slate-500 block mb-1">{t('village')}</label>
+                  <label className="text-slate-500 block mb-1">Village</label>
                   <select
                     value={village}
                     onChange={(e) => setVillage(e.target.value)}
@@ -120,7 +118,7 @@ export default function LocateLandPage() {
           {/* Officer Jurisdiction Card */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
             <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" /> {t('assigned_officer_title')}
+              <ShieldCheck className="w-4 h-4 text-emerald-600" /> Assigned Jurisdiction Officer
             </h3>
 
             {jurisdiction ? (
@@ -129,15 +127,15 @@ export default function LocateLandPage() {
                   {jurisdiction.officer_name || 'Officer A (Tahsildar)'}
                 </div>
                 <div className="text-emerald-800 font-medium">
-                  {t('designation')} {jurisdiction.officer_designation || 'Tahsildar'}
+                  Designation: {jurisdiction.officer_designation || 'Tahsildar'}
                 </div>
                 <div className="text-slate-600 font-mono pt-1 border-t border-emerald-200/60">
-                  {village} | {taluk} | {district}
+                  {village} | {taluk} Taluk | {district}
                 </div>
               </div>
             ) : (
               <div className="text-xs text-slate-500 italic p-3 bg-slate-50 rounded-lg">
-                Searching...
+                Searching jurisdiction mapping...
               </div>
             )}
           </div>
@@ -145,9 +143,9 @@ export default function LocateLandPage() {
           {/* Reference Land Records Card */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-sm text-slate-900">{t('official_records_title')}</h3>
+              <h3 className="font-bold text-sm text-slate-900">Official Land Records (Reference)</h3>
               <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">
-                {records.length} {t('records_found')}
+                {records.length} Found
               </span>
             </div>
 

@@ -3,13 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { ShieldCheck, UserCheck, Briefcase, Settings, FileText, MapPin, Eye, Globe } from 'lucide-react';
-import { useLanguage, Language } from '@/context/LanguageContext';
+import { ShieldCheck, UserCheck, Briefcase, Settings, FileText, MapPin, Eye } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { language, setLanguage, t } = useLanguage();
 
   // Active Role state stored in localStorage (default CITIZEN)
   const [activeRole, setActiveRole] = useState<'CITIZEN' | 'OFFICER' | 'ADMIN'>('CITIZEN');
@@ -35,14 +33,14 @@ export default function Navbar() {
       <div className="bg-slate-900 text-slate-300 text-[11px] py-1.5 px-4 flex justify-between items-center border-b border-slate-800">
         <div className="flex items-center space-x-2">
           <span className="bg-emerald-600 text-white font-extrabold text-[9px] px-2 py-0.5 rounded tracking-wider">
-            {t('civil_portal_banner')}
+            CIVIL VERIFICATION PORTAL
           </span>
           <span className="hidden sm:inline">
-            {t('banner_legal_notice')}
+            Official Land Record Verification Layer. Final legal authority rests with jurisdiction officers.
           </span>
         </div>
         <div className="flex items-center space-x-3 text-[10px]">
-          <span className="text-slate-400">{t('featured_case')}</span>
+          <span className="text-slate-400">Featured Case:</span>
           <Link href="/citizen/case/GL-1024" className="font-mono text-amber-400 font-bold hover:underline">
             GL-1024 (Survey 142/3B vs 142/3C)
           </Link>
@@ -63,7 +61,7 @@ export default function Navbar() {
                 TN-CIVIC
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 -mt-0.5">{t('portal_tagline')}</p>
+            <p className="text-[11px] text-slate-400 -mt-0.5">Grievance Resolution & Verification Platform</p>
           </div>
         </Link>
 
@@ -77,7 +75,7 @@ export default function Navbar() {
                   pathname.includes('/citizen/dashboard') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                <FileText className="w-4 h-4" /> {t('my_grievances')}
+                <FileText className="w-4 h-4" /> My Grievances
               </Link>
               <Link
                 href="/citizen/locate"
@@ -85,13 +83,13 @@ export default function Navbar() {
                   pathname.includes('/citizen/locate') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                <MapPin className="w-4 h-4" /> {t('locate_my_land')}
+                <MapPin className="w-4 h-4" /> Locate My Land
               </Link>
               <Link
                 href="/citizen/raise-grievance"
                 className="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md font-medium shadow-sm flex items-center gap-1.5 transition ml-2"
               >
-                {t('raise_grievance')}
+                + Raise Grievance
               </Link>
             </>
           )}
@@ -104,7 +102,7 @@ export default function Navbar() {
                   pathname.includes('/officer/dashboard') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                <Briefcase className="w-4 h-4" /> {t('case_queue')}
+                <Briefcase className="w-4 h-4" /> Case Queue
               </Link>
               <Link
                 href="/officer/case/GL-1024"
@@ -112,7 +110,7 @@ export default function Navbar() {
                   pathname.includes('/officer/case/GL-1024') ? 'bg-amber-600 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                <Eye className="w-4 h-4 text-amber-300" /> {t('case_review')} (GL-1024)
+                <Eye className="w-4 h-4 text-amber-300" /> Case Review (GL-1024)
               </Link>
             </>
           )}
@@ -125,7 +123,7 @@ export default function Navbar() {
                   pathname.includes('/admin/dashboard') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                <Settings className="w-4 h-4" /> {t('admin_overview')}
+                <Settings className="w-4 h-4" /> Overview & SLAs
               </Link>
               <Link
                 href="/admin/audit-logs"
@@ -133,43 +131,29 @@ export default function Navbar() {
                   pathname.includes('/admin/audit-logs') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                <ShieldCheck className="w-4 h-4" /> {t('audit_logs')}
+                <ShieldCheck className="w-4 h-4" /> Audit Logs
               </Link>
             </>
           )}
         </nav>
 
-        {/* Language Selector + Role Switcher Pill + Sign In Link */}
+        {/* Role Switcher Pill & Dedicated Login Link */}
         <div className="flex items-center space-x-2 sm:space-x-3">
-          {/* Tri-Lingual Selector */}
-          <div className="relative flex items-center bg-slate-800 border border-slate-700 rounded-lg px-2 py-1">
-            <Globe className="w-3.5 h-3.5 text-slate-400 mr-1.5 shrink-0" />
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value as Language)}
-              className="bg-transparent text-xs font-bold text-slate-200 outline-none cursor-pointer"
-            >
-              <option value="en" className="bg-slate-900 text-white">English</option>
-              <option value="ta" className="bg-slate-900 text-white">தமிழ் (Tamil)</option>
-              <option value="hi" className="bg-slate-900 text-white">हिंदी (Hindi)</option>
-            </select>
-          </div>
-
           <Link
             href="/login"
             className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-blue-300 font-bold border border-slate-700 rounded-lg text-xs transition flex items-center gap-1"
           >
-            <UserCheck className="w-3.5 h-3.5 text-blue-400" /> {t('sign_in')}
+            <UserCheck className="w-3.5 h-3.5 text-blue-400" /> Sign In
           </Link>
 
-          <div className="bg-slate-800 border border-slate-700 rounded-lg p-1 hidden sm:flex items-center space-x-1">
+          <div className="bg-slate-800 border border-slate-700 rounded-lg p-1 flex items-center space-x-1">
             <button
               onClick={() => handleRoleChange('CITIZEN')}
               className={`px-2.5 py-1 text-xs rounded-md font-medium transition ${
                 activeRole === 'CITIZEN' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
               }`}
             >
-              {t('role_citizen')}
+              Citizen
             </button>
             <button
               onClick={() => handleRoleChange('OFFICER')}
@@ -177,7 +161,7 @@ export default function Navbar() {
                 activeRole === 'OFFICER' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
               }`}
             >
-              {t('role_officer')}
+              Officer
             </button>
             <button
               onClick={() => handleRoleChange('ADMIN')}
@@ -185,7 +169,7 @@ export default function Navbar() {
                 activeRole === 'ADMIN' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
               }`}
             >
-              {t('role_admin')}
+              Admin
             </button>
           </div>
         </div>

@@ -3,11 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { UserCheck, Briefcase, Settings, ArrowRight, Cpu, CheckCircle2, ShieldAlert, Sparkles } from 'lucide-react';
-import { useLanguage } from '@/context/LanguageContext';
 
 export default function LandingPage() {
-  const { t } = useLanguage();
-
   return (
     <div className="space-y-16 py-4">
       {/* Hero Section */}
@@ -15,18 +12,18 @@ export default function LandingPage() {
         <div className="absolute top-0 right-0 -translate-y-12 translate-x-12 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 max-w-3xl space-y-6">
           <div className="inline-flex items-center gap-2 bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-semibold px-3 py-1 rounded-full">
-            <Sparkles className="w-3.5 h-3.5" /> {t('hero_badge')}
+            <Sparkles className="w-3.5 h-3.5" /> Citizen-Centric Verification Layer
           </div>
           
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
-            {t('portal_name')}
+            LANDLENS
           </h1>
           <p className="text-xl md:text-2xl text-blue-200 font-medium">
-            {t('portal_tagline')}
+            Citizen-Centric Land Record Verification & Grievance Resolution
           </p>
 
           <p className="text-slate-300 text-base md:text-lg leading-relaxed">
-            {t('hero_subtitle')}
+            Locate land parcels, compare reference registries against title evidence with AI assistance, and track grievance resolution with jurisdiction revenue officers.
           </p>
 
           {/* Quick Role Portal Buttons */}
@@ -35,7 +32,7 @@ export default function LandingPage() {
               href="/citizen/locate"
               className="px-6 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 transition group"
             >
-              <UserCheck className="w-5 h-5" /> {t('btn_locate_land')}
+              <UserCheck className="w-5 h-5" /> Locate My Land & Jurisdiction
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
             </Link>
             
@@ -43,7 +40,7 @@ export default function LandingPage() {
               href="/citizen/raise-grievance"
               className="px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 transition group"
             >
-              <Briefcase className="w-5 h-5" /> {t('btn_raise_grievance')}
+              <Briefcase className="w-5 h-5" /> Raise a Grievance
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
             </Link>
           </div>
@@ -52,8 +49,11 @@ export default function LandingPage() {
           <div className="mt-8 p-4 bg-slate-800/80 rounded-xl border border-slate-700 text-xs text-slate-300 flex items-start gap-3">
             <ShieldAlert className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
             <div>
-              <span className="font-bold text-amber-300 uppercase block tracking-wider">{t('core_principle_title')}</span>
-              <p>{t('core_principle_text')}</p>
+              <span className="font-bold text-amber-300 uppercase block tracking-wider">Core Principle</span>
+              <p>
+                &quot;AI ASSISTS THE INVESTIGATION; THE AUTHORIZED OFFICER MAKES THE DECISION.&quot;
+                Government records remain the authoritative source. LANDLENS provides a citizen-centric verification layer.
+              </p>
             </div>
           </div>
         </div>
@@ -63,29 +63,29 @@ export default function LandingPage() {
       <section className="space-y-6">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
-            {t('how_it_works')}
+            How LANDLENS Works
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
-            <h3 className="font-bold text-slate-900 text-sm">{t('step1_title')}</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">{t('step1_desc')}</p>
+            <h3 className="font-bold text-slate-900 text-sm">1. Locate & Verify</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">Search by District, Taluk, Village, or Survey Number to identify assigned revenue officers and reference land records.</p>
           </div>
 
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
-            <h3 className="font-bold text-slate-900 text-sm">{t('step2_title')}</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">{t('step2_desc')}</p>
+            <h3 className="font-bold text-slate-900 text-sm">2. Raise Grievance & Upload Evidence</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">Submit your registered deed or patta document to flag potential mismatches in area, survey number, or ownership.</p>
           </div>
 
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
-            <h3 className="font-bold text-slate-900 text-sm">{t('step3_title')}</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">{t('step3_desc')}</p>
+            <h3 className="font-bold text-slate-900 text-sm">3. AI Discrepancy Analysis</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">Gemini AI extracts document text and compares it against reference records to generate advisory verification findings.</p>
           </div>
 
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
-            <h3 className="font-bold text-slate-900 text-sm">{t('step4_title')}</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">{t('step4_desc')}</p>
+            <h3 className="font-bold text-slate-900 text-sm">4. Officer Resolution</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">Jurisdiction Tahsildars review findings, request evidence, resolve grievances, or escalate cases within SLA deadlines.</p>
           </div>
         </div>
       </section>
@@ -95,11 +95,11 @@ export default function LandingPage() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <div className="inline-flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider mb-1">
-              ⭐ {t('primary_case_study')}
+              ⭐ Primary Verification Case Study
             </div>
             <h3 className="text-2xl font-bold text-white">Case GL-1024 (Survey Number Discrepancy)</h3>
             <p className="text-slate-400 text-sm">
-              {t('case_gl1024_desc')}
+              Citizen K. Kumar holds Patta <code className="text-blue-300">PT-10245</code> in Ambattur Kaveri Village.
             </p>
           </div>
 
@@ -107,23 +107,23 @@ export default function LandingPage() {
             href="/officer/case/GL-1024"
             className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-sm transition flex items-center gap-2 shrink-0"
           >
-            {t('inspect_case_gl1024')} <ArrowRight className="w-4 h-4" />
+            Inspect Case GL-1024 <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
           <div className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-            <span className="text-slate-400 block mb-1 text-[11px] font-sans font-semibold">{t('gov_ref_record')}</span>
-            <div className="text-slate-200">{t('patta_no')} PT-10245</div>
-            <div className="text-slate-200">{t('survey_no')} <span className="text-emerald-400 font-bold">142/3B</span></div>
-            <div className="text-slate-200">{t('owner_name')} K Kumar (1.25 Acres)</div>
+            <span className="text-slate-400 block mb-1 text-[11px] font-sans font-semibold">Government Reference Record:</span>
+            <div className="text-slate-200">Patta Number: PT-10245</div>
+            <div className="text-slate-200">Survey Number: <span className="text-emerald-400 font-bold">142/3B</span></div>
+            <div className="text-slate-200">Owner Name: K Kumar (1.25 Acres)</div>
           </div>
 
           <div className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-            <span className="text-slate-400 block mb-1 text-[11px] font-sans font-semibold">{t('citizen_evidence_doc')}</span>
-            <div className="text-slate-200">{t('doc_no')} SD/2024/99128</div>
-            <div className="text-slate-200">{t('survey_no')} <span className="text-amber-400 font-bold">142/3C</span></div>
-            <div className="text-slate-200">{t('owner_name')} K Kumar (1.25 Acres)</div>
+            <span className="text-slate-400 block mb-1 text-[11px] font-sans font-semibold">Citizen Uploaded Evidence (Sale Deed):</span>
+            <div className="text-slate-200">Document No: SD/2024/99128</div>
+            <div className="text-slate-200">Survey Number: <span className="text-amber-400 font-bold">142/3C</span></div>
+            <div className="text-slate-200">Owner Stated: K Kumar (1.25 Acres)</div>
           </div>
         </div>
       </section>
