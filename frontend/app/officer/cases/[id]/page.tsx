@@ -254,6 +254,35 @@ export default function OfficerCaseDetailPage({ params }: { params: { id: string
               </button>
             </div>
           </div>
+
+          {/* RECORDED OFFICER ACTIONS & REMARKS HISTORY */}
+          {data.officer_actions && data.officer_actions.length > 0 && (
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+              <h3 className="font-bold text-slate-900 text-sm border-b border-slate-100 pb-3 flex items-center justify-between">
+                <span>Recorded Officer Remarks & Audit</span>
+                <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">
+                  {data.officer_actions.length} Action(s)
+                </span>
+              </h3>
+
+              <div className="space-y-3">
+                {data.officer_actions.map((act: any) => (
+                  <div key={act.id} className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 text-xs space-y-1.5 font-mono">
+                    <div className="flex justify-between items-center">
+                      <span className="font-bold text-slate-900 font-sans">{act.officer_name} ({act.officer_designation || 'Tahsildar'})</span>
+                      <span className="font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200 text-[10px]">
+                        {act.action}
+                      </span>
+                    </div>
+                    <p className="text-slate-800 italic font-sans font-medium">&quot;{act.remarks}&quot;</p>
+                    <span className="text-[10px] text-slate-400 block text-right font-mono">
+                      {new Date(act.timestamp).toLocaleString()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
