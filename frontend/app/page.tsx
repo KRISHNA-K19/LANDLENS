@@ -18,13 +18,10 @@ export default function LandingPage() {
         <div className="absolute top-0 right-0 -translate-y-12 translate-x-12 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-          <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center gap-2 bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-semibold px-3 py-1 rounded-full">
-              <Sparkles className="w-3.5 h-3.5" /> {t('landing.hero_badge', 'AI-assisted. Human-verified.')}
-            </div>
-            
-            <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-tight cursor-pointer group inline-block">
-              <span className="relative inline-flex items-center min-w-[220px]">
+          <div className="lg:col-span-7 space-y-5">
+            {/* LANDLENS Title (Top Left) with நிலவறை Hover Effect */}
+            <h1 className="text-5xl md:text-7xl font-black tracking-tight text-white leading-none cursor-pointer group block mb-2">
+              <span className="relative inline-flex items-center min-w-[250px]">
                 <span className="transition-all duration-300 ease-out group-hover:opacity-0 group-hover:scale-95">
                   LANDLENS
                 </span>
@@ -33,7 +30,12 @@ export default function LandingPage() {
                 </span>
               </span>
             </h1>
-            <p className="text-2xl md:text-3xl text-blue-200 font-extrabold">
+
+            <div className="inline-flex items-center gap-2 bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-semibold px-3.5 py-1 rounded-full shadow-xs">
+              <Sparkles className="w-3.5 h-3.5" /> {t('landing.hero_badge', 'AI-assisted. Human-verified.')}
+            </div>
+            
+            <p className="text-2xl md:text-3xl text-blue-200 font-extrabold pt-1">
               {t('landing.hero_title', 'Transparent Land Record Verification & Discrepancy Resolution')}
             </p>
 
