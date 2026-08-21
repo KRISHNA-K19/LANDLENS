@@ -24,11 +24,11 @@ export default function LandingPage() {
             </div>
             
             <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-tight cursor-pointer group inline-block">
-              <span className="relative inline-block overflow-hidden">
-                <span className="inline-block transition-all duration-300 group-hover:-translate-y-full group-hover:opacity-0">
+              <span className="relative inline-flex items-center min-w-[220px]">
+                <span className="transition-all duration-300 ease-out group-hover:opacity-0 group-hover:scale-95">
                   LANDLENS
                 </span>
-                <span className="absolute left-0 top-0 translate-y-full opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 text-amber-400 font-bold">
+                <span className="absolute left-0 opacity-0 scale-95 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:scale-100 text-amber-400 font-bold whitespace-nowrap leading-none">
                   நிலவறை
                 </span>
               </span>

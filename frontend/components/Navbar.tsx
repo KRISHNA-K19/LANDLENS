@@ -110,14 +110,14 @@ export default function Navbar() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-black text-xl tracking-wider text-white relative inline-block min-w-[110px] h-7 overflow-hidden">
-                <span className="absolute left-0 top-0 transition-all duration-300 group-hover:-translate-y-full group-hover:opacity-0">
+              <div className="relative inline-flex items-center font-black text-xl tracking-wider text-white min-w-[125px]">
+                <span className="transition-all duration-300 ease-out group-hover:opacity-0 group-hover:scale-95">
                   LANDLENS
                 </span>
-                <span className="absolute left-0 top-0 translate-y-full opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 text-amber-400 font-bold font-serif">
+                <span className="absolute left-0 opacity-0 scale-95 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:scale-100 text-amber-400 font-bold whitespace-nowrap leading-none">
                   நிலவறை
                 </span>
-              </span>
+              </div>
               <span className="text-[9px] font-bold bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30 uppercase tracking-widest group-hover:border-amber-400/40 group-hover:text-amber-300 transition-colors">
                 TN-CIVIC
               </span>
