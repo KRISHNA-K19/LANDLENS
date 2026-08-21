@@ -17,10 +17,9 @@ export default function CitizenDashboard() {
   const loadGrievances = async () => {
     setLoading(true);
     try {
-      const res = await apiClient.get('/grievances', {
-        params: { citizen_id: 1, status: filterStatus || undefined }
-      });
-      setGrievances(res.data);
+      const { fetchGrievances } = await import('@/lib/api');
+      const data = await fetchGrievances(1, filterStatus || undefined);
+      setGrievances(data);
     } catch (err) {
       console.error("Failed to load grievances", err);
     } finally {

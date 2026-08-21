@@ -185,14 +185,58 @@ export const locateLandAndJurisdiction = async (district: string, taluk: string,
 };
 
 export const createGrievance = async (formData: FormData): Promise<GrievanceDetail> => {
+  let created: GrievanceDetail = MOCK_CASE_1024;
   try {
     const res = await apiClient.post('/grievances', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
-    return res.data;
+    created = res.data;
   } catch (err) {
-    return MOCK_CASE_1024;
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    const newCode = `GL-${randomNum}`;
+    const category = formData.get('category')?.toString() || 'Survey number mismatch';
+    const description = formData.get('description')?.toString() || 'Registered grievance evidence mismatch';
+    
+    created = {
+      ...MOCK_CASE_1024,
+      id: randomNum,
+      case_code: newCode,
+      category: category,
+      description: description,
+      status: 'SUBMITTED',
+      created_at: new Date().toISOString()
+    };
   }
+
+  // Save to local storage for real-time reflection across tabs/pages
+  if (typeof window !== 'undefined') {
+    try {
+      const existing = localStorage.getItem('landlens_user_cases');
+      const list: GrievanceSummary[] = existing ? JSON.parse(existing) : [];
+      const summary: GrievanceSummary = {
+        id: created.id,
+        case_code: created.case_code,
+        citizen_name: created.citizen?.name || 'K. Kumar',
+        citizen_phone: created.citizen?.phone || '9876543210',
+        village: created.land_record?.village || 'Kaveri Village',
+        taluk: created.land_record?.taluk || 'Ambattur',
+        district: created.land_record?.district || 'Chennai',
+        survey_number: created.land_record?.survey_number || '142/3B',
+        patta_number: created.land_record?.patta_number || 'PT-10245',
+        category: created.category,
+        status: created.status,
+        priority: created.priority || 'HIGH',
+        sla_remaining_seconds: 72000,
+        is_sla_breached: false,
+        created_at: created.created_at
+      };
+      localStorage.setItem('landlens_user_cases', JSON.stringify([summary, ...list]));
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  return created;
 };
 
 const MOCK_CASE_1024: GrievanceDetail = {
@@ -238,31 +282,95 @@ export const fetchGrievanceDetail = async (id: string | number): Promise<Grievan
   }
 };
 
+export const fetchGrievances = async (citizenId: number = 1, status?: string): Promise<GrievanceSummary[]> => {
+  try {
+    const res = await apiClient.get('/grievances', {
+      params: { citizen_id: citizenId, status }
+    });
+    if (res.data && res.data.length > 0) {
+      return res.data;
+    }
+  } catch (err) {
+    console.warn("Backend grievance fetch warning, relying on state layer");
+  }
+
+  // Fallback to local stored grievances + MOCK_CASE_1024
+  let localCases: GrievanceSummary[] = [];
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('landlens_user_cases');
+    if (saved) {
+      try { localCases = JSON.parse(saved); } catch (e) {}
+    }
+  }
+
+  const defaultMock: GrievanceSummary = {
+    id: 1,
+    case_code: "GL-1024",
+    citizen_name: "K. Kumar",
+    citizen_phone: "9876543210",
+    village: "Kaveri Village",
+    taluk: "Ambattur",
+    district: "Chennai",
+    survey_number: "142/3B",
+    patta_number: "PT-10245",
+    category: "Survey number mismatch",
+    status: "UNDER_REVIEW",
+    priority: "HIGH",
+    sla_remaining_seconds: 72000,
+    is_sla_breached: false,
+    created_at: new Date().toISOString()
+  };
+
+  const combined = [defaultMock, ...localCases.filter(c => c.case_code !== 'GL-1024')];
+  if (status) {
+    return combined.filter(c => c.status === status);
+  }
+  return combined;
+};
+
 export const fetchOfficerCases = async (officerId: number = 1, status?: string): Promise<GrievanceSummary[]> => {
   try {
     const res = await apiClient.get('/officer/cases', {
       params: { officer_id: officerId, status }
     });
-    return res.data;
+    if (res.data && res.data.length > 0) {
+      return res.data;
+    }
   } catch (err) {
-    return [{
-      id: 1,
-      case_code: "GL-1024",
-      citizen_name: "K. Kumar",
-      citizen_phone: "9876543210",
-      village: "Kaveri Village",
-      taluk: "Ambattur",
-      district: "Chennai",
-      survey_number: "142/3B",
-      patta_number: "PT-10245",
-      category: "Survey number mismatch",
-      status: "UNDER_REVIEW",
-      priority: "HIGH",
-      sla_remaining_seconds: 72000,
-      is_sla_breached: false,
-      created_at: new Date().toISOString()
-    }];
+    console.warn("Backend officer fetch warning, relying on state layer");
   }
+
+  let localCases: GrievanceSummary[] = [];
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('landlens_user_cases');
+    if (saved) {
+      try { localCases = JSON.parse(saved); } catch (e) {}
+    }
+  }
+
+  const defaultMock: GrievanceSummary = {
+    id: 1,
+    case_code: "GL-1024",
+    citizen_name: "K. Kumar",
+    citizen_phone: "9876543210",
+    village: "Kaveri Village",
+    taluk: "Ambattur",
+    district: "Chennai",
+    survey_number: "142/3B",
+    patta_number: "PT-10245",
+    category: "Survey number mismatch",
+    status: "UNDER_REVIEW",
+    priority: "HIGH",
+    sla_remaining_seconds: 72000,
+    is_sla_breached: false,
+    created_at: new Date().toISOString()
+  };
+
+  const combined = [defaultMock, ...localCases.filter(c => c.case_code !== 'GL-1024')];
+  if (status) {
+    return combined.filter(c => c.status === status);
+  }
+  return combined;
 };
 
 export const submitOfficerAction = async (
