@@ -4,10 +4,13 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { ShieldCheck, UserCheck, Briefcase, Settings, FileText, MapPin, Eye, LogOut, KeyRound } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import LanguageSelector from './LanguageSelector';
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useLanguage();
 
   // Active Role state stored in localStorage (default CITIZEN)
   const [activeRole, setActiveRole] = useState<'CITIZEN' | 'OFFICER' | 'ADMIN'>('CITIZEN');
@@ -83,14 +86,14 @@ export default function Navbar() {
       <div className="bg-slate-900 text-slate-300 text-[11px] py-1.5 px-4 flex justify-between items-center border-b border-slate-800">
         <div className="flex items-center space-x-2">
           <span className="bg-emerald-600 text-white font-extrabold text-[9px] px-2 py-0.5 rounded tracking-wider">
-            CIVIL VERIFICATION PORTAL
+            {t('common.civil_portal_banner', 'CIVIL VERIFICATION PORTAL')}
           </span>
           <span className="hidden sm:inline">
-            Official Land Record Verification Layer. Final legal authority rests with jurisdiction officers.
+            {t('common.banner_legal_notice', 'Official Land Record Verification Layer. Final legal authority rests with jurisdiction officers.')}
           </span>
         </div>
         <div className="flex items-center space-x-3 text-[10px]">
-          <span className="text-slate-400">Featured Case:</span>
+          <span className="text-slate-400">{t('common.featured_case', 'Featured Case:')}</span>
           <Link href="/citizen/case/GL-1024" className="font-mono text-amber-400 font-bold hover:underline">
             GL-1024 (Survey 142/3B vs 142/3C)
           </Link>
@@ -111,7 +114,7 @@ export default function Navbar() {
                 TN-CIVIC
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 -mt-0.5">Grievance Resolution & Verification Platform</p>
+            <p className="text-[11px] text-slate-400 -mt-0.5">{t('common.portal_tagline')}</p>
           </div>
         </Link>
 
@@ -125,7 +128,7 @@ export default function Navbar() {
                   pathname.includes('/citizen/dashboard') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                <FileText className="w-4 h-4" /> My Grievances
+                <FileText className="w-4 h-4" /> {t('common.my_grievances', 'My Grievances')}
               </Link>
               <Link
                 href="/citizen/locate"
@@ -133,13 +136,13 @@ export default function Navbar() {
                   pathname.includes('/citizen/locate') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                <MapPin className="w-4 h-4" /> Locate My Land
+                <MapPin className="w-4 h-4" /> {t('common.locate_my_land', 'Locate My Land')}
               </Link>
               <Link
                 href="/citizen/raise-grievance"
                 className="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md font-medium shadow-sm flex items-center gap-1.5 transition ml-2"
               >
-                + Raise Grievance
+                {t('common.raise_grievance', '+ Raise Grievance')}
               </Link>
             </>
           )}
@@ -152,7 +155,7 @@ export default function Navbar() {
                   pathname.includes('/officer/dashboard') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                <Briefcase className="w-4 h-4" /> Case Queue
+                <Briefcase className="w-4 h-4" /> {t('common.case_queue', 'Case Queue')}
               </Link>
               <Link
                 href="/officer/cases/1024"
@@ -160,7 +163,7 @@ export default function Navbar() {
                   pathname.includes('/officer/cases/1024') ? 'bg-amber-600 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                <Eye className="w-4 h-4 text-amber-300" /> Case Workspace (GL-1024)
+                <Eye className="w-4 h-4 text-amber-300" /> {t('common.case_review', 'Case Workspace')} (GL-1024)
               </Link>
             </>
           )}
@@ -173,7 +176,7 @@ export default function Navbar() {
                   pathname.includes('/admin/dashboard') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                <Settings className="w-4 h-4" /> Console Overview
+                <Settings className="w-4 h-4" /> {t('common.console_overview', 'Console Overview')}
               </Link>
               <Link
                 href="/admin/officers"
@@ -181,7 +184,7 @@ export default function Navbar() {
                   pathname.includes('/admin/officers') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                Revenue Officers
+                {t('common.revenue_officers', 'Revenue Officers')}
               </Link>
               <Link
                 href="/admin/audit-logs"
@@ -189,28 +192,30 @@ export default function Navbar() {
                   pathname.includes('/admin/audit-logs') ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'
                 }`}
               >
-                <ShieldCheck className="w-4 h-4" /> Audit Logs
+                <ShieldCheck className="w-4 h-4" /> {t('common.audit_logs', 'Audit Logs')}
               </Link>
             </>
           )}
         </nav>
 
-        {/* Dedicated Role Selection & Authentication Controls */}
+        {/* Language Selector + Authentication Controls */}
         <div className="flex items-center space-x-2 sm:space-x-3">
+          <LanguageSelector />
+
           {isAuthenticated ? (
             <button
               onClick={handleSignOut}
               className="px-2.5 py-1.5 bg-red-900/60 hover:bg-red-800 text-red-200 font-bold border border-red-700/60 rounded-lg text-xs transition flex items-center gap-1"
               title="Sign Out of Portal"
             >
-              <LogOut className="w-3.5 h-3.5" /> Sign Out
+              <LogOut className="w-3.5 h-3.5" /> {t('common.sign_out', 'Sign Out')}
             </button>
           ) : (
             <Link
               href={activeRole === 'CITIZEN' ? '/citizen/login' : activeRole === 'OFFICER' ? '/officer/login' : '/admin/login'}
               className="px-2.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg text-xs transition flex items-center gap-1 shadow-sm"
             >
-              <KeyRound className="w-3.5 h-3.5" /> {activeRole} Login
+              <KeyRound className="w-3.5 h-3.5" /> {t('common.sign_in', 'Sign In')}
             </Link>
           )}
 
@@ -222,7 +227,7 @@ export default function Navbar() {
                 activeRole === 'CITIZEN' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
               }`}
             >
-              Citizen
+              {t('common.role_citizen', 'Citizen')}
             </button>
             <button
               onClick={() => handleRoleSelect('OFFICER')}
@@ -230,7 +235,7 @@ export default function Navbar() {
                 activeRole === 'OFFICER' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'
               }`}
             >
-              Officer
+              {t('common.role_officer', 'Officer')}
             </button>
             <button
               onClick={() => handleRoleSelect('ADMIN')}
@@ -238,7 +243,7 @@ export default function Navbar() {
                 activeRole === 'ADMIN' ? 'bg-purple-600 text-white shadow' : 'text-slate-400 hover:text-white'
               }`}
             >
-              Admin
+              {t('common.role_admin', 'Admin')}
             </button>
           </div>
         </div>

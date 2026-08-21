@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FileText, MapPin, Plus, Clock, AlertCircle, CheckCircle2, ArrowRight, ShieldCheck } from 'lucide-react';
 import { apiClient, GrievanceSummary } from '@/lib/api';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function CitizenDashboard() {
+  const { t } = useLanguage();
   const [grievances, setGrievances] = useState<GrievanceSummary[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [filterStatus, setFilterStatus] = useState<string>('');
@@ -33,13 +35,13 @@ export default function CitizenDashboard() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-extrabold text-slate-900">Citizen Grievance Portal</h1>
+            <h1 className="text-2xl font-extrabold text-slate-900">{t('citizen.dashboard_title', 'My Land Grievances')}</h1>
             <span className="text-xs bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded border border-blue-200">
-              Citizen: K. Kumar
+              {t('common.role_citizen')}: K. Kumar
             </span>
           </div>
           <p className="text-sm text-slate-600 mt-1">
-            Track active land record verification requests and inspect officer updates.
+            {t('citizen.dashboard_subtitle')}
           </p>
         </div>
 
@@ -48,13 +50,13 @@ export default function CitizenDashboard() {
             href="/citizen/locate"
             className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium rounded-xl text-sm transition flex items-center gap-2 border border-slate-300"
           >
-            <MapPin className="w-4 h-4 text-blue-600" /> Locate My Land
+            <MapPin className="w-4 h-4 text-blue-600" /> {t('common.locate_my_land')}
           </Link>
           <Link
             href="/citizen/raise-grievance"
             className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-sm transition flex items-center gap-2 shadow-sm"
           >
-            <Plus className="w-4 h-4" /> Raise Grievance
+            <Plus className="w-4 h-4" /> {t('common.raise_grievance')}
           </Link>
         </div>
       </div>
@@ -63,7 +65,7 @@ export default function CitizenDashboard() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="font-bold text-lg text-slate-900 flex items-center gap-2">
-            <FileText className="w-5 h-5 text-blue-600" /> My Registered Cases ({grievances.length})
+            <FileText className="w-5 h-5 text-blue-600" /> {t('common.my_grievances')} ({grievances.length})
           </h2>
 
           {/* Status Filter */}
@@ -131,7 +133,7 @@ export default function CitizenDashboard() {
                     href={`/citizen/case/${g.case_code}`}
                     className="font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
                   >
-                    View Status & Timeline <ArrowRight className="w-3.5 h-3.5" />
+                    {t('common.view_details')} <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </div>
