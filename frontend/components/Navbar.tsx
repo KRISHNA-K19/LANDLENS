@@ -103,15 +103,22 @@ export default function Navbar() {
 
       {/* Main Navbar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Brand Logo */}
-        <Link href="/" className="flex items-center space-x-3 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-blue-900/30 group-hover:scale-105 transition-transform duration-300">
+        {/* Brand Logo with Smooth LANDLENS -> நிலவறை Hover Transformation */}
+        <Link href="/" className="flex items-center space-x-3 group cursor-pointer">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-blue-900/30 group-hover:scale-105 group-hover:rotate-3 transition-all duration-300">
             <ShieldCheck className="w-6 h-6" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-black text-xl tracking-wider text-white">LANDLENS</span>
-              <span className="text-[9px] font-bold bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30 uppercase tracking-widest">
+              <span className="font-black text-xl tracking-wider text-white relative inline-block min-w-[110px] h-7 overflow-hidden">
+                <span className="absolute left-0 top-0 transition-all duration-300 group-hover:-translate-y-full group-hover:opacity-0">
+                  LANDLENS
+                </span>
+                <span className="absolute left-0 top-0 translate-y-full opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 text-amber-400 font-bold font-serif">
+                  நிலவறை
+                </span>
+              </span>
+              <span className="text-[9px] font-bold bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30 uppercase tracking-widest group-hover:border-amber-400/40 group-hover:text-amber-300 transition-colors">
                 TN-CIVIC
               </span>
             </div>

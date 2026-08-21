@@ -23,8 +23,15 @@ export default function LandingPage() {
               <Sparkles className="w-3.5 h-3.5" /> {t('landing.hero_badge', 'AI-assisted. Human-verified.')}
             </div>
             
-            <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-tight">
-              LANDLENS
+            <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-tight cursor-pointer group inline-block">
+              <span className="relative inline-block overflow-hidden">
+                <span className="inline-block transition-all duration-300 group-hover:-translate-y-full group-hover:opacity-0">
+                  LANDLENS
+                </span>
+                <span className="absolute left-0 top-0 translate-y-full opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 text-amber-400 font-bold">
+                  நிலவறை
+                </span>
+              </span>
             </h1>
             <p className="text-2xl md:text-3xl text-blue-200 font-extrabold">
               {t('landing.hero_title', 'Transparent Land Record Verification & Discrepancy Resolution')}
