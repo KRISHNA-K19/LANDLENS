@@ -18,23 +18,29 @@ export default function LandingPage() {
         <div className="absolute top-0 right-0 -translate-y-12 translate-x-12 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-          <div className="lg:col-span-7 space-y-5">
-            {/* LANDLENS Title (Top Left) with நிலவறை Hover Effect */}
-            <h1 className="text-5xl md:text-7xl font-black tracking-tight text-white leading-none cursor-pointer group block mb-2">
-              <span className="relative inline-flex items-center min-w-[250px]">
-                <span className="transition-all duration-300 ease-out group-hover:opacity-0 group-hover:scale-95">
-                  LANDLENS
+          <div className="lg:col-span-7 flex flex-col items-start gap-4">
+            {/* 1. LANDLENS Title (Top Left Corner) with நிலவறை Hover Effect */}
+            <div className="w-full">
+              <h1 className="text-5xl md:text-7xl font-black tracking-tight text-white leading-none cursor-pointer group inline-block">
+                <span className="relative inline-flex items-center min-w-[260px] h-16">
+                  <span className="transition-all duration-300 ease-out group-hover:opacity-0 group-hover:scale-95">
+                    LANDLENS
+                  </span>
+                  <span className="absolute left-0 opacity-0 scale-95 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:scale-100 text-amber-400 font-bold whitespace-nowrap leading-none">
+                    நிலவறை
+                  </span>
                 </span>
-                <span className="absolute left-0 opacity-0 scale-95 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:scale-100 text-amber-400 font-bold whitespace-nowrap leading-none">
-                  நிலவறை
-                </span>
-              </span>
-            </h1>
+              </h1>
+            </div>
 
-            <div className="inline-flex items-center gap-2 bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-semibold px-3.5 py-1 rounded-full shadow-xs">
-              <Sparkles className="w-3.5 h-3.5" /> {t('landing.hero_badge', 'AI-assisted. Human-verified.')}
+            {/* 2. Badge (Below LANDLENS Title) */}
+            <div>
+              <div className="inline-flex items-center gap-2 bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-xs">
+                <Sparkles className="w-3.5 h-3.5" /> {t('landing.hero_badge', 'Citizen-Centric Verification Layer')}
+              </div>
             </div>
             
+            {/* 3. Hero Description */}
             <p className="text-2xl md:text-3xl text-blue-200 font-extrabold pt-1">
               {t('landing.hero_title', 'Transparent Land Record Verification & Discrepancy Resolution')}
             </p>
