@@ -28,25 +28,60 @@ export default function NewGrievanceWizardPage() {
     e.preventDefault();
     setSubmitting(true);
 
-    try {
-      const formData = new FormData();
-      formData.append('citizen_id', '1');
-      formData.append('land_record_id', selectedLandId);
-      formData.append('jurisdiction_id', '1');
-      formData.append('category', category);
-      formData.append('description', description);
-      if (file) {
-        formData.append('file', file);
-      }
+    const processSubmission = async (previewUrl?: string) => {
+      try {
+        const formData = new FormData();
+        formData.append('citizen_id', '1');
+        formData.append('land_record_id', selectedLandId);
+        formData.append('jurisdiction_id', '1');
+        formData.append('category', category);
+        formData.append('description', description);
+        if (file) {
+          formData.append('file', file);
+        }
 
-      const res = await createGrievance(formData);
-      setSubmittedCase(res);
-      setStep(6); // Move to Step 6: Confirmation & AI Processing
-    } catch (err) {
-      console.error(err);
-      setStep(6);
-    } finally {
-      setSubmitting(false);
+        const res = await createGrievance(formData);
+        
+        if (file && previewUrl) {
+          const docItem = {
+            id: Date.now(),
+            grievance_id: res.id,
+            file_name: file.name,
+            file_path: `/uploads/${file.name}`,
+            file_type: file.type || file.name.split('.').pop(),
+            file_size: file.size,
+            uploaded_at: new Date().toISOString(),
+            file_preview_url: previewUrl
+          };
+          res.documents = [docItem as any];
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem(`landlens_doc_${res.case_code}`, JSON.stringify(docItem));
+            } catch (e) {}
+          }
+        }
+
+        setSubmittedCase(res);
+        setStep(6);
+      } catch (err) {
+        console.error(err);
+        setStep(6);
+      } finally {
+        setSubmitting(false);
+      }
+    };
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        processSubmission(reader.result as string);
+      };
+      reader.onerror = () => {
+        processSubmission();
+      };
+      reader.readAsDataURL(file);
+    } else {
+      processSubmission();
     }
   };
 

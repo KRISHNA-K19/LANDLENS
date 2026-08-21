@@ -27,6 +27,17 @@ export default function OfficerCaseDetailPage({ params }: { params: { id: string
     setLoading(true);
     try {
       const res = await fetchGrievanceDetail(caseId);
+      if (typeof window !== 'undefined') {
+        const savedDoc = localStorage.getItem(`landlens_doc_${caseId}`);
+        if (savedDoc) {
+          try {
+            const docObj = JSON.parse(savedDoc);
+            if (!res.documents?.some((d: any) => d.file_name === docObj.file_name)) {
+              res.documents = [docObj as any, ...(res.documents || [])];
+            }
+          } catch (e) {}
+        }
+      }
       setData(res);
     } catch (err) {
       console.error(err);

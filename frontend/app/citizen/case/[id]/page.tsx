@@ -31,6 +31,17 @@ export default function CitizenCaseDetailPage() {
     setLoading(true);
     try {
       const data = await fetchGrievanceDetail(caseId);
+      if (typeof window !== 'undefined') {
+        const savedDoc = localStorage.getItem(`landlens_doc_${caseId}`);
+        if (savedDoc) {
+          try {
+            const docObj = JSON.parse(savedDoc);
+            if (!data.documents?.some((d: any) => d.file_name === docObj.file_name)) {
+              data.documents = [docObj as any, ...(data.documents || [])];
+            }
+          } catch (e) {}
+        }
+      }
       setGrievance(data);
     } catch (err: any) {
       console.error(err);
