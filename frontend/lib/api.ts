@@ -274,12 +274,34 @@ const MOCK_CASE_1024: GrievanceDetail = {
 };
 
 export const fetchGrievanceDetail = async (id: string | number): Promise<GrievanceDetail> => {
+  let detail: GrievanceDetail = { ...MOCK_CASE_1024, case_code: String(id) };
   try {
     const res = await apiClient.get(`/grievances/${id}`);
-    return res.data;
+    if (res.data) detail = res.data;
   } catch (err) {
-    return MOCK_CASE_1024;
+    detail = { ...MOCK_CASE_1024, case_code: String(id) };
   }
+
+  if (typeof window !== 'undefined') {
+    try {
+      const codeStr = String(id);
+      const savedActions = localStorage.getItem(`landlens_actions_${codeStr}`);
+      if (savedActions) {
+        const parsedActions: OfficerAction[] = JSON.parse(savedActions);
+        if (parsedActions && parsedActions.length > 0) {
+          const existingIds = new Set((detail.officer_actions || []).map(a => a.id));
+          const uniqueNewActions = parsedActions.filter(a => !existingIds.has(a.id));
+          detail.officer_actions = [...(detail.officer_actions || []), ...uniqueNewActions];
+
+          const lastAction = parsedActions[parsedActions.length - 1];
+          const newStatus = lastAction.action === 'RESOLVE' ? 'RESOLVED' : lastAction.action === 'REQUEST_ADDITIONAL_DOCUMENTS' ? 'ADDITIONAL_DOCUMENTS_REQUIRED' : 'ESCALATED';
+          detail.status = newStatus;
+        }
+      }
+    } catch (e) {}
+  }
+
+  return detail;
 };
 
 export const fetchGrievances = async (citizenId: number = 1, status?: string): Promise<GrievanceSummary[]> => {
@@ -294,7 +316,6 @@ export const fetchGrievances = async (citizenId: number = 1, status?: string): P
     console.warn("Backend grievance fetch warning, relying on state layer");
   }
 
-  // Fallback to local stored grievances + MOCK_CASE_1024
   let localCases: GrievanceSummary[] = [];
   if (typeof window !== 'undefined') {
     const saved = localStorage.getItem('landlens_user_cases');
@@ -379,28 +400,62 @@ export const submitOfficerAction = async (
   remarks: string,
   officerId: number = 1
 ): Promise<GrievanceDetail> => {
+  let updatedDetail: GrievanceDetail = { ...MOCK_CASE_1024, case_code: String(caseId) };
   try {
     const res = await apiClient.post(`/officer/cases/${caseId}/action`, { action, remarks }, {
       params: { officer_id: officerId }
     });
-    return res.data;
+    updatedDetail = res.data;
   } catch (err) {
     const updatedStatus = action === 'RESOLVE' ? 'RESOLVED' : action === 'REQUEST_ADDITIONAL_DOCUMENTS' ? 'ADDITIONAL_DOCUMENTS_REQUIRED' : 'ESCALATED';
-    return {
+    updatedDetail = {
       ...MOCK_CASE_1024,
+      case_code: String(caseId),
       status: updatedStatus,
-      officer_actions: [{
-        id: 1,
-        grievance_id: 1,
-        officer_id: 1,
-        officer_name: "Officer A (Tahsildar)",
-        officer_designation: "Tahsildar",
-        action: action as any,
-        remarks: remarks,
-        timestamp: new Date().toISOString()
-      }]
+      officer_actions: []
     };
   }
+
+  const newActionItem: OfficerAction = {
+    id: Date.now(),
+    grievance_id: 1,
+    officer_id: officerId,
+    officer_name: "Officer A (Ambattur Tahsildar)",
+    officer_designation: "Tahsildar",
+    action: action as any,
+    remarks: remarks,
+    timestamp: new Date().toISOString()
+  };
+
+  if (typeof window !== 'undefined') {
+    try {
+      const codeStr = String(caseId);
+      const savedActions = localStorage.getItem(`landlens_actions_${codeStr}`);
+      const list: OfficerAction[] = savedActions ? JSON.parse(savedActions) : [];
+      const updatedList = [...list, newActionItem];
+      localStorage.setItem(`landlens_actions_${codeStr}`, JSON.stringify(updatedList));
+
+      // Also persist on GL-1024 default fallback key
+      if (codeStr === '1024' || codeStr === '1') {
+        localStorage.setItem(`landlens_actions_GL-1024`, JSON.stringify(updatedList));
+      }
+
+      updatedDetail.officer_actions = updatedList;
+      updatedDetail.status = action === 'RESOLVE' ? 'RESOLVED' : action === 'REQUEST_ADDITIONAL_DOCUMENTS' ? 'ADDITIONAL_DOCUMENTS_REQUIRED' : 'ESCALATED';
+
+      // Sync updated status to user cases dashboard
+      const savedUserCases = localStorage.getItem('landlens_user_cases');
+      if (savedUserCases) {
+        const uList: GrievanceSummary[] = JSON.parse(savedUserCases);
+        const updatedUList = uList.map(c => (c.case_code === codeStr || c.id === Number(caseId)) ? { ...c, status: updatedDetail.status } : c);
+        localStorage.setItem('landlens_user_cases', JSON.stringify(updatedUList));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  return updatedDetail;
 };
 
 export const fetchAuditLogs = async () => {
