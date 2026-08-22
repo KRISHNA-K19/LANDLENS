@@ -21,8 +21,8 @@ export default function LandingPage() {
           <div className="lg:col-span-7 flex flex-col items-start gap-4">
             {/* 1. LANDLENS Title (Top Left Corner) with நிலவறை Hover Effect */}
             <div className="w-full">
-              <h1 className="text-5xl md:text-7xl font-black tracking-tight text-white leading-none cursor-pointer group inline-block">
-                <span className="relative inline-flex items-center min-w-[260px] h-16">
+              <h1 className="text-3xl sm:text-5xl md:text-7xl font-black tracking-tight text-white leading-none cursor-pointer group inline-block">
+                <span className="relative inline-flex items-center min-w-[180px] sm:min-w-[260px] h-12 sm:h-16">
                   <span className="transition-all duration-300 ease-out group-hover:opacity-0 group-hover:scale-95">
                     LANDLENS
                   </span>
@@ -35,34 +35,34 @@ export default function LandingPage() {
 
             {/* 2. Badge (Below LANDLENS Title) */}
             <div>
-              <div className="inline-flex items-center gap-2 bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-xs">
-                <Sparkles className="w-3.5 h-3.5" /> {t('landing.hero_badge', 'Citizen-Centric Verification Layer')}
+              <div className="inline-flex items-center gap-2 bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-semibold px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full shadow-xs">
+                <Sparkles className="w-3.5 h-3.5 shrink-0" /> {t('landing.hero_badge', 'Citizen-Centric Verification Layer')}
               </div>
             </div>
             
             {/* 3. Hero Description */}
-            <p className="text-2xl md:text-3xl text-blue-200 font-extrabold pt-1">
+            <p className="text-xl sm:text-2xl md:text-3xl text-blue-200 font-extrabold pt-1">
               {t('landing.hero_title', 'Transparent Land Record Verification & Discrepancy Resolution')}
             </p>
 
-            <p className="text-slate-300 text-base md:text-lg leading-relaxed max-w-2xl">
+            <p className="text-slate-300 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl">
               {t('landing.hero_subtitle', 'Locate land parcels, compare reference registries against title evidence with AI assistance, and track grievance resolution with jurisdiction revenue officers.')}
             </p>
 
             {/* CTAs */}
-            <div className="pt-2 flex flex-wrap gap-4">
+            <div className="pt-2 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 w-full sm:w-auto">
               <Link
                 href="/citizen/locate"
-                className="px-6 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg flex items-center gap-2 transition group"
+                className="w-full sm:w-auto px-5 sm:px-6 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg flex items-center justify-center gap-2 transition group text-sm sm:text-base"
               >
-                {t('landing.btn_locate_land', 'Locate My Land & Jurisdiction')} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
+                {t('landing.btn_locate_land', 'Locate My Land & Jurisdiction')} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition shrink-0" />
               </Link>
               
               <Link
                 href="/citizen/raise-grievance"
-                className="px-6 py-3.5 bg-slate-800/80 hover:bg-slate-800 text-slate-200 border border-slate-700 font-semibold rounded-xl flex items-center gap-2 transition"
+                className="w-full sm:w-auto px-5 sm:px-6 py-3.5 bg-slate-800/80 hover:bg-slate-800 text-slate-200 border border-slate-700 font-semibold rounded-xl flex items-center justify-center gap-2 transition text-sm sm:text-base"
               >
-                {t('landing.btn_raise_grievance', 'Raise a Grievance')} <ArrowDown className="w-4 h-4" />
+                {t('landing.btn_raise_grievance', 'Raise a Grievance')} <ArrowDown className="w-4 h-4 shrink-0" />
               </Link>
             </div>
 

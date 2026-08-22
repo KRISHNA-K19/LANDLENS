@@ -164,7 +164,8 @@ export default function AdminOfficersPage() {
 
       {/* Officers Table */}
       <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-        <table className="w-full text-left text-xs">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left text-xs min-w-[640px]">
           <thead className="bg-slate-100 text-slate-600 font-bold uppercase text-[10px]">
             <tr>
               <th className="p-4">OFFICER NAME & ROLE</th>
@@ -195,6 +196,7 @@ export default function AdminOfficersPage() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* ADD OFFICER & JURISDICTION MODAL */}
